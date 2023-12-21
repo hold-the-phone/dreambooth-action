@@ -51,8 +51,8 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
                   "input": {
-                      "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
-                      "class_prompt": "a photo of a person",
+                      "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} man",
+                      "class_prompt": "a photo of a man",
                       "instance_data": "${{ inputs.input-data-url }}",
                       "max_train_steps": ${{ inputs.max-train-steps }},
                       "ckpt_base": "https://civitai.com/api/download/models/125411?type=Model&format=PickleTensor&size=full&fp=fp16",
