@@ -17,12 +17,6 @@ on:
         description: Total number of training steps to perform. Higher numbers produce more accurate results, but take longer to run. Set this to something low like 100 to test that your workflow is working, then run again at a higher number like 2000 to train more accurately.
         type: number
         default: 2000
-      ckpt-identifier:
-        required: true
-        description: URL to the ckpt to start training from
-      data-url:
-        required: true
-        description: URL your data can be downloaded from
 
 # Find your Replicate API token at https://replicate.com/account
 env:
@@ -47,6 +41,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Zip training data
+        run: |
+          zip -r data.zip data
+      
+      - name: Upload training data
+        id: upload-training-data
+        run: |
+          RESPONSE=$(curl -s -X POST -H "Authorization: Token ${{ secrets.REPLICATE_API_TOKEN }}" https://dreambooth-api-experimental.replicate.com/v1/upload/data.zip)
+          curl -X PUT -H "Content-Type: application/zip" --upload-file data.zip "$(jq -r ".upload_url" <<< "$RESPONSE")"
+          echo "INSTANCE_DATA_URL=$(jq -r '.serving_url' <<< $RESPONSE)"
+          echo "INSTANCE_DATA_URL=$(jq -r '.serving_url' <<< $RESPONSE)" >> $GITHUB_OUTPUT
+
       - name: Start training
         run: |
           curl -s -X POST \
@@ -56,9 +62,8 @@ jobs:
                   "input": {
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
-                      "max_train_steps": ${{ inputs.max-train-steps }},
-                      "ckpt_base": ${{ inputs.ckpt-identifier }},
-                      "instance_data": ${{ inputs.data-url }}
+                      "instance_data": "${{ steps.upload-training-data.outputs.INSTANCE_DATA_URL }}",
+                      "max_train_steps": ${{ inputs.max-train-steps }}
                   },
                   "model": "${{ inputs.model-name }}",
                   "trainer_version": "a8ba568da0313951a6b311b43b1ea3bf9f2ef7b9fd97ed94cebd7ffd2da66654"
@@ -68,6 +73,9 @@ jobs:
       - name: Link to model
         run: |
           echo "🚂 Your model is now training!"
+          echo "This takes about 10-30 minutes, depending on how many training steps you're running."
+          echo "To see your model, visit https://replicate.com/${{ inputs.model-name }} and refresh until you see the prediction form."
+          echo "For more info on how to run your new model, see https://replicate.com/blog/dreambooth-api"
           echo "This takes about 10-30 minutes, depending on how many training steps you're running."
           echo "To see your model, visit https://replicate.com/${{ inputs.model-name }} and refresh until you see the prediction form."
           echo "For more info on how to run your new model, see https://replicate.com/blog/dreambooth-api"
