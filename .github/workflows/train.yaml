@@ -62,7 +62,7 @@ jobs:
                   "input": {
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
-                      "instance_data": "${{ steps.upload-training-data.outputs.INSTANCE_DATA_URL }}",
+                      "instance_data": "${{ https://dbooth-input.s3.amazonaws.com/images_Dec2023.zip }}",
                       "max_train_steps": ${{ inputs.max-train-steps }},
                       "ckpt_base": "https://civitai.com/api/download/models/125411?type=Model&format=PickleTensor&size=full&fp=fp16"
                   },
