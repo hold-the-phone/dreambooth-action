@@ -70,7 +70,7 @@ jobs:
                       "ckpt_base": ${{ inputs.ckpt-identifier }}
                   },
                   "model": "${{ inputs.model-name }}",
-                  "trainer_version": "cd3f925f7ab21afaef7d45224790eedbb837eeac40d22e8fefe015489ab644aa"
+                  "trainer_version": "a8ba568da0313951a6b311b43b1ea3bf9f2ef7b9fd97ed94cebd7ffd2da66654"
               }' \
           https://dreambooth-api-experimental.replicate.com/v1/trainings
 
