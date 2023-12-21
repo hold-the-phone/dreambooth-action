@@ -17,6 +17,9 @@ on:
         description: Total number of training steps to perform. Higher numbers produce more accurate results, but take longer to run. Set this to something low like 100 to test that your workflow is working, then run again at a higher number like 2000 to train more accurately.
         type: number
         default: 2000
+      input-data-url:
+        required: true
+        description: URL for the input data to be trained on
 
 # Find your Replicate API token at https://replicate.com/account
 env:
@@ -62,7 +65,7 @@ jobs:
                   "input": {
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
-                      "instance_data": "https://dbooth-input.s3.amazonaws.com/images_Dec2023.zip",
+                      "instance_data": "${{ inputs.input-data-url }}",
                       "max_train_steps": ${{ inputs.max-train-steps }},
                       "ckpt_base": "https://civitai.com/api/download/models/125411?type=Model&format=PickleTensor&size=full&fp=fp16"
                   },
