@@ -56,7 +56,6 @@ jobs:
                   "input": {
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
-                      "instance_data": "${{ steps.upload-training-data.outputs.INSTANCE_DATA_URL }}",
                       "max_train_steps": ${{ inputs.max-train-steps }},
                       "ckpt_base": ${{ inputs.ckpt-identifier }},
                       "instance_data": ${{ inputs.data-url }}
