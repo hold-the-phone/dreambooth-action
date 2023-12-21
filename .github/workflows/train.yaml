@@ -17,6 +17,9 @@ on:
         description: Total number of training steps to perform. Higher numbers produce more accurate results, but take longer to run. Set this to something low like 100 to test that your workflow is working, then run again at a higher number like 2000 to train more accurately.
         type: number
         default: 2000
+      ckpt-identifier:
+        required: true
+        description: URL to the ckpt to start training from
 
 # Find your Replicate API token at https://replicate.com/account
 env:
@@ -63,7 +66,8 @@ jobs:
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
                       "instance_data": "${{ steps.upload-training-data.outputs.INSTANCE_DATA_URL }}",
-                      "max_train_steps": ${{ inputs.max-train-steps }}
+                      "max_train_steps": ${{ inputs.max-train-steps }},
+                      "ckpt_base": ${{ inputs.ckpt-identifier }}
                   },
                   "model": "${{ inputs.model-name }}",
                   "trainer_version": "cd3f925f7ab21afaef7d45224790eedbb837eeac40d22e8fefe015489ab644aa"
