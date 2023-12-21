@@ -63,7 +63,8 @@ jobs:
                       "instance_prompt": "a photo of a ${{ inputs.prompt-identifier }} person",
                       "class_prompt": "a photo of a person",
                       "instance_data": "${{ steps.upload-training-data.outputs.INSTANCE_DATA_URL }}",
-                      "max_train_steps": ${{ inputs.max-train-steps }}
+                      "max_train_steps": ${{ inputs.max-train-steps }},
+                      "ckpt_base": "https://civitai.com/api/download/models/125411?type=Model&format=PickleTensor&size=full&fp=fp16"
                   },
                   "model": "${{ inputs.model-name }}",
                   "trainer_version": "a8ba568da0313951a6b311b43b1ea3bf9f2ef7b9fd97ed94cebd7ffd2da66654"
