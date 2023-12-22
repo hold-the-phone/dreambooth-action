@@ -20,6 +20,9 @@ on:
       input-data-url:
         required: true
         description: URL for the input data to be trained on
+      model-url:
+        required: true
+        description: URL for the model checkpoint for training
 
 # Find your Replicate API token at https://replicate.com/account
 env:
@@ -55,7 +58,7 @@ jobs:
                       "class_prompt": "a photo of a man",
                       "instance_data": "${{ inputs.input-data-url }}",
                       "max_train_steps": ${{ inputs.max-train-steps }},
-                      "ckpt_base": "https://civitai.com/api/download/models/125411?type=Model&format=PickleTensor&size=full&fp=fp16",
+                      "ckpt_base": "${{ inputs.model-url }}",
                       "lr_warmup_steps": 100
                   },
                   "model": "${{ inputs.model-name }}",
